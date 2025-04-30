@@ -2,7 +2,8 @@ import { Client, LocalAuth, Message } from 'whatsapp-web.js';
 import qrcode from 'qrcode-terminal';
 import 'dotenv/config';
 import fetch from 'node-fetch';
-import { AI_API_URL } from './vars';
+import { AI_API_URL, CREATOR, LINKS, LINKS_TEXT, OFFICIAL_PROFILES, TECNOLOGIES } from './vars';
+import { isAboutCreator, isAboutLinks, isAboutOneLink, isAboutprofiles, isAboutTecnologies, isHelloMessgae } from './context_verification';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -31,9 +32,50 @@ client.on('message', async (msg: Message) => {
 
         await chat.sendStateTyping();
 
-        if (isMensagemOla(msg.body) && msg.from.endsWith('@c.us')) {
+        if (isHelloMessgae(msg.body) && msg.from.endsWith('@c.us')) {
             await client.sendMessage(msg.from, `Olá! ${firstName}! \nSou o Paçoca AI, como posso te ajudar hoje?`);
-        } else {
+        } 
+
+
+        // Verifica se a mensagem contém alguma das palavras-chave para links
+        else if (isAboutOneLink(msg)) {
+            const message = msg.body.toLowerCase();
+            const linkKey = Object.keys(LINKS).find((key) =>
+                message.includes(key.toLowerCase())
+            );
+
+            if (linkKey) {
+                await client.sendMessage(msg.from, `Aqui está ${linkKey}: ${LINKS[linkKey as keyof typeof LINKS]}`);
+            } 
+        }
+        // Verifica se a mensagem contém alguma das palavras-chave para perfis oficiais
+        else if (isAboutprofiles(msg)) {
+            const message = msg.body.toLowerCase();
+            const profileKey = Object.keys(OFFICIAL_PROFILES).find((key) =>
+                message.includes(key.toLowerCase())
+            );
+
+            if (profileKey) {
+                await client.sendMessage(msg.from, `Aqui está o link do ${profileKey}: ${OFFICIAL_PROFILES[profileKey as keyof typeof OFFICIAL_PROFILES]}`);
+            }
+        }
+    
+        // tecnologias
+        else if (isAboutTecnologies(msg)) {
+            await client.sendMessage(msg.from, TECNOLOGIES);
+        }
+
+        // criador
+        else if (isAboutCreator(msg)) {
+            await client.sendMessage(msg.from, CREATOR);
+        }
+        
+        // links
+        else if (isAboutLinks(msg)) {
+            await client.sendMessage(msg.from, LINKS_TEXT);
+        }
+
+        else {
             const response = await processarComIA(msg.body, firstName);
             await msg.reply(response);
         }
@@ -43,10 +85,6 @@ client.on('message', async (msg: Message) => {
     }
 });
 
-function isMensagemOla(text: string): boolean {
-    const mensagens = ["ola", "olá", "oi", "bom dia", "boa tarde", "boa noite"];
-    return mensagens.includes(text.toLowerCase());
-}
 
 // Função para processar a IA
 async function processarComIA(text: string, name: string): Promise<string> {
