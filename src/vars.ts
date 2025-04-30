@@ -1,0 +1,1 @@
+export const AI_API_URL = process.env.AI_API_URL || "http://localhost:8082";
