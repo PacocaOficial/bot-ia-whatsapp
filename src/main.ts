@@ -5,6 +5,13 @@ import 'dotenv/config';
 import fetch from 'node-fetch';
 import { AI_API_URL, CREATOR, LINKS, LINKS_TEXT, OFFICIAL_PROFILES, TECNOLOGIES } from './vars';
 import { isAboutCreator, isAboutLinks, isAboutOneLink, isAboutprofiles, isAboutTecnologies, isHelloMessgae } from './context_verification';
+import express from "express"
+
+const app = express(); // Inicializando o aplicativo Express
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+});
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
