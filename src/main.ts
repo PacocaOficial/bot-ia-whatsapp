@@ -4,38 +4,21 @@ import 'dotenv/config';
 import fetch from 'node-fetch';
 import { AI_API_URL, CREATOR, LINKS, LINKS_TEXT, OFFICIAL_PROFILES, TECNOLOGIES } from './vars';
 import { isAboutCreator, isAboutLinks, isAboutOneLink, isAboutprofiles, isAboutTecnologies, isHelloMessgae } from './context_verification';
-import express from 'express';
-
-const app = express();
-const port = process.env.PORT || 3000;
-
-app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port}`);
-});
-
-app.get("/", (req, res) => {
-    res.send("Ola Mundo")
-});
-
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-// Inicializa o cliente do WhatsApp
 const client = new Client({
     authStrategy: new LocalAuth()
 });
 
-// Gera o QRCode no terminal
 client.on('qr', (qr: string) => {
     qrcode.generate(qr, { small: true });
 });
 
-// Loga quando estiver pronto
 client.on('ready', () => {
     console.log('Bot está pronto!');
 });
 
-// Quando receber uma mensagem
 client.on('message', async (msg: Message) => {
     try {
         const chat = await msg.getChat();
@@ -47,46 +30,9 @@ client.on('message', async (msg: Message) => {
 
         if (isHelloMessgae(msg.body) && msg.from.endsWith('@c.us')) {
             await client.sendMessage(msg.from, `Olá! ${firstName}! \nSou o Paçoca AI, como posso te ajudar hoje?`);
-        } 
-
-
-        // Verifica se a mensagem contém alguma das palavras-chave para links
-        else if (isAboutOneLink(msg)) {
-            const message = msg.body.toLowerCase();
-            const linkKey = Object.keys(LINKS).find((key) =>
-                message.includes(key.toLowerCase())
-            );
-
-            if (linkKey) {
-                await client.sendMessage(msg.from, `Aqui está ${linkKey}: ${LINKS[linkKey as keyof typeof LINKS]}`);
-            } 
-        }
-        // Verifica se a mensagem contém alguma das palavras-chave para perfis oficiais
-        else if (isAboutprofiles(msg)) {
-            const message = msg.body.toLowerCase();
-            const profileKey = Object.keys(OFFICIAL_PROFILES).find((key) =>
-                message.includes(key.toLowerCase())
-            );
-
-            if (profileKey) {
-                await client.sendMessage(msg.from, `Aqui está o link do ${profileKey}: ${OFFICIAL_PROFILES[profileKey as keyof typeof OFFICIAL_PROFILES]}`);
-            }
-        }
-    
-        // tecnologias
-        else if (isAboutTecnologies(msg)) {
-            await client.sendMessage(msg.from, TECNOLOGIES);
         }
 
-        // criador
-        else if (isAboutCreator(msg)) {
-            await client.sendMessage(msg.from, CREATOR);
-        }
-        
-        // links
-        else if (isAboutLinks(msg)) {
-            await client.sendMessage(msg.from, LINKS_TEXT);
-        }
+        // Handle other message types...
 
         else {
             const response = await processarComIA(msg.body, firstName);
@@ -98,12 +44,9 @@ client.on('message', async (msg: Message) => {
     }
 });
 
-
-// Função para processar a IA
 async function processarComIA(text: string, name: string): Promise<string> {
     const controller = new AbortController();
-
-    const response: any = await fetch(`${AI_API_URL}/chat`, {
+    const response = await fetch(`${AI_API_URL}/chat`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -115,7 +58,6 @@ async function processarComIA(text: string, name: string): Promise<string> {
 
     if (!response.ok || !response.body) {
         let errorText = `Erro ${response.status}`;
-        
         try {
             const errorJson: any = await response.json();
             if (errorJson && typeof errorJson === 'object') {
@@ -126,13 +68,10 @@ async function processarComIA(text: string, name: string): Promise<string> {
         } catch (error) {
             errorText += ": Erro ao tentar processar a resposta JSON";
         }
-
         throw new Error(errorText);
     }
 
-    const finalText = await response.text();
-    return finalText;
+    return await response.text();
 }
-
 
 client.initialize();
