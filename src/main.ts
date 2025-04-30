@@ -1,5 +1,6 @@
 import { Client, LocalAuth, Message } from 'whatsapp-web.js';
 import qrcode from 'qrcode-terminal';
+import QRCode from 'qrcode';
 import 'dotenv/config';
 import fetch from 'node-fetch';
 import { AI_API_URL, CREATOR, LINKS, LINKS_TEXT, OFFICIAL_PROFILES, TECNOLOGIES } from './vars';
@@ -12,7 +13,10 @@ const client = new Client({
 });
 
 client.on('qr', (qr: string) => {
-    qrcode.generate(qr, { small: true });
+    QRCode.toDataURL(qr, function (err: any, url) {
+        console.log("Abra esse link no navegador para escanear o QR:");
+        console.log(url); // ou exiba em uma página
+    });
 });
 
 client.on('ready', () => {
