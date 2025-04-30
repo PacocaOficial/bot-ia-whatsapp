@@ -11,9 +11,11 @@ import express from "express"
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 const client = new Client({
-    authStrategy: new LocalAuth()
+    authStrategy: new LocalAuth(),
+    puppeteer: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+    }
 });
-
 client.on('qr', (qr: string) => {
     QRCode.toDataURL(qr, function (err: any, url) {
         console.log("Abra esse link no navegador para escanear o QR:");
