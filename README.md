@@ -2,6 +2,7 @@
 Chat de IA utilizando Ollama localmente com Python para responder perguntas de uma rede socia pelo WhatsApp no número: +55 11 98595-6209
 
 ## Converse com: +55 11 98595-6209
+Para usar, basta iniciar uma conversa com: https://wa.me/5511985956209
 
 ![image](https://github.com/user-attachments/assets/5105de0d-caaa-487e-a281-1712b086f5e6)
 
