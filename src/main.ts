@@ -87,5 +87,5 @@ const app = express(); // Inicializando o aplicativo Express
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     client.initialize();
-    console.log(`Servidor rodando na porta ${PORT}`);
+    console.log(`Servidor rodando em ${PORT}`);
 });
