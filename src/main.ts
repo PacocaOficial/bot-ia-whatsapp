@@ -7,11 +7,6 @@ import { AI_API_URL, CREATOR, LINKS, LINKS_TEXT, OFFICIAL_PROFILES, TECNOLOGIES 
 import { isAboutCreator, isAboutLinks, isAboutOneLink, isAboutprofiles, isAboutTecnologies, isHelloMessgae } from './context_verification';
 import express from "express"
 
-const app = express(); // Inicializando o aplicativo Express
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
-});
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -85,4 +80,12 @@ async function processarComIA(text: string, name: string): Promise<string> {
     return await response.text();
 }
 
-client.initialize();
+
+
+
+const app = express(); // Inicializando o aplicativo Express
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+    client.initialize();
+    console.log(`Servidor rodando na porta ${PORT}`);
+});
