@@ -4,6 +4,19 @@ import 'dotenv/config';
 import fetch from 'node-fetch';
 import { AI_API_URL, CREATOR, LINKS, LINKS_TEXT, OFFICIAL_PROFILES, TECNOLOGIES } from './vars';
 import { isAboutCreator, isAboutLinks, isAboutOneLink, isAboutprofiles, isAboutTecnologies, isHelloMessgae } from './context_verification';
+import express from 'express';
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+    console.log(`Servidor rodando em http://localhost:${port}`);
+});
+
+app.get("/", (req, res) => {
+    res.send("Ola Mundo")
+});
+
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
