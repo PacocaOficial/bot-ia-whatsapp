@@ -37,7 +37,7 @@ client.on('message', async (msg: Message) => {
         await chat.sendStateTyping();
 
         if (isHelloMessgae(msg.body) && msg.from.endsWith('@c.us')) {
-            await client.sendMessage(msg.from, `Olá! ${firstName}! \nSou o Paçoca AI, como posso te ajudar hoje?`);
+            await client.sendMessage(msg.from, `Olá! ${firstName}! \nSou o Paçoca AI, como posso te ajudar hoje, meu chapa?`);
         }
 
         // Handle other message types...
