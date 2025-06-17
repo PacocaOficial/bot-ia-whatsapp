@@ -29,6 +29,8 @@ client.on('ready', () => {
 
 client.on('message', async (msg: Message) => {
     try {
+        if (msg.fromMe) return;
+
         const chat = await msg.getChat();
         const contact = await msg.getContact();
         const name = contact.pushname || 'Usuário';
