@@ -10,11 +10,9 @@ import express from "express"
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
-        executablePath: '/snap/bin/chromium',
         args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
-        '--disable-features=IsolateOrigins,site-per-process'
         ]
     }
 
