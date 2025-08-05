@@ -12,7 +12,7 @@ on:
 jobs:
   deploy-production:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout do repositório
       uses: actions/checkout@v2
@@ -36,8 +36,9 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.REMOTE_PORT }}
         script: |
-            cd ${{secrets.TARGET_PRODUCTION}}
+            cd ${{ secrets.TARGET_PRODUCTION }}
             npm install --legacy-peer-deps
             npm run build
-            chown -R  www-data:www-data .
-            sudo chmod -R 755 .
+            pm2 stop pacoca-bot || true
+            pm2 start build/main.js --name pacoca-bot
+            pm2 save

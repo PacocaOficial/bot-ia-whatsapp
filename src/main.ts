@@ -13,6 +13,7 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
+        executablePath: '/snap/bin/chromium',
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     }
 });
