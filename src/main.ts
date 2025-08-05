@@ -4,7 +4,7 @@ import QRCode from 'qrcode';
 import 'dotenv/config';
 import fetch from 'node-fetch';
 import { AI_API_URL, CREATOR, LINKS, LINKS_TEXT, OFFICIAL_PROFILES, TECNOLOGIES } from './vars';
-import { isAboutCreator, isAboutLinks, isAboutOneLink, isAboutprofiles, isAboutTecnologies, isHelloMessgae } from './context_verification';
+import { isHelloMessgae } from './context_verification';
 import express from "express"
 
 

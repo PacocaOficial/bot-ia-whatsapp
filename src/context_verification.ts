@@ -7,28 +7,29 @@ function isAboutPacoca(text: string){
 
 export function isHelloMessgae(text: string): boolean {
     const mensagens = ["ola", "olá", "oi", "bom dia", "boa tarde", "boa noite"];
-    return mensagens.includes(text.toLowerCase());
+    const textoLower = text.toLowerCase();
+    return mensagens.some(m => textoLower.includes(m));
 }
 
-export function isAboutCreator(msg: any): boolean{
-    return isAboutPacoca(msg.body) &&
-    (msg.body.toLowerCase().includes("quem criou") || msg.body.toLowerCase().includes("criador") || msg.body.toLowerCase().includes("te criou"))
+export function isAboutCreator(text: string): boolean{
+    return isAboutPacoca(text) &&
+    (text.toLowerCase().includes("quem criou") || text.toLowerCase().includes("criador") || text.toLowerCase().includes("te criou"))
 }
 
-export function isAboutTecnologies(msg: any): boolean{
-    return isAboutPacoca(msg.body) &&
-    (msg.body.toLowerCase().includes("tecnologias"))
+export function isAboutTecnologies(text: string): boolean{
+    return isAboutPacoca(text) &&
+    (text.toLowerCase().includes("tecnologias"))
 }
 
-export function isAboutLinks(msg: any): boolean{
-    return isAboutPacoca(msg.body) &&
-    (msg.body.toLowerCase().includes("links") || msg.body.toLowerCase().includes("link"))
+export function isAboutLinks(text: string): boolean{
+    return isAboutPacoca(text) &&
+    (text.toLowerCase().includes("links") || text.toLowerCase().includes("link"))
 }
 
-export function isAboutOneLink(msg: any): boolean{
-    return Object.keys(LINKS).some(key => msg.body.toLowerCase().includes(key.toLowerCase()));
+export function isAboutOneLink(text: string): boolean{
+    return Object.keys(LINKS).some(key => text.toLowerCase().includes(key.toLowerCase()));
 }
 
-export function isAboutprofiles(msg: any): boolean{
-    return Object.keys(OFFICIAL_PROFILES).some(key => msg.body.toLowerCase().includes(key.toLowerCase()));
+export function isAboutprofiles(text: string): boolean{
+    return Object.keys(OFFICIAL_PROFILES).some(key => text.toLowerCase().includes(key.toLowerCase()));
 }
