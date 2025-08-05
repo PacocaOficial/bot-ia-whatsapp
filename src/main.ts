@@ -51,7 +51,7 @@ client.on('message', async (msg: Message) => {
         
         await chat.sendStateTyping();
         
-        if (!msg.body) {
+        if (!msg.body || msg.hasMedia) {
             await client.sendMessage(msg.from, `Olá! ${firstName}! \nInfelizmente o Paçoca AI consegue analizar apenas texto por enquanto`);
             return;
         }
