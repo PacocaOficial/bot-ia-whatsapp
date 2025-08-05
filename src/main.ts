@@ -42,13 +42,20 @@ client.on('message', async (msg: Message) => {
     try {
         if (msg.fromMe) return;
 
+
+        
         const chat = await msg.getChat();
         const contact = await msg.getContact();
         const name = contact.pushname || 'Usuário';
         const firstName = name.split(" ")[0];
-
+        
         await chat.sendStateTyping();
-
+        
+        if (!msg.body) {
+            await client.sendMessage(msg.from, `Olá! ${firstName}! \nInfelizmente o Paçoca AI consegue analizar apenas texto por enquanto`);
+            return;
+        }
+        
         if (isHelloMessgae(msg.body) && msg.from.endsWith('@c.us')) {
             await client.sendMessage(msg.from, `Olá! ${firstName}! \nSou o Paçoca AI, como posso te ajudar hoje, meu chapa?`);
             return;
