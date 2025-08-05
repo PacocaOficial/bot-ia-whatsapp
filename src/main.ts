@@ -65,11 +65,13 @@ client.on('message', async (msg: Message) => {
 
         else {
             const response = await processarComIA(msg.body, firstName);
-            await msg.reply(response);
+            console.log("111");
+            
+            // await msg.reply(response);
         }
     } catch (err) {
         console.error("Erro ao processar mensagem:", err);
-        await msg.reply(`Houve um problema tecnico. \nO Paçoca IA não conseguiu processar sua mensagem\n ${err}`);
+        await client.sendMessage(msg.from, `Houve um problema tecnico. \nO Paçoca IA não conseguiu processar sua mensagem\n ${err}`);
     }
 });
 
