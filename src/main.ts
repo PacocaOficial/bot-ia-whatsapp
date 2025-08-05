@@ -11,8 +11,13 @@ const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
         executablePath: '/snap/bin/chromium',
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
+        args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-features=IsolateOrigins,site-per-process'
+        ]
     }
+
 });
 
 client.on('qr', (qr: string) => {
@@ -33,7 +38,7 @@ client.on('message', async (msg: Message) => {
         console.log('Mensagem recebida antes do bot estar pronto, ignorando.');
         return;
     }
-    
+
     try {
         if (msg.fromMe) return;
 
