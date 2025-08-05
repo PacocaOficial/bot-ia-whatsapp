@@ -7,9 +7,6 @@ import { AI_API_URL, CREATOR, LINKS, LINKS_TEXT, OFFICIAL_PROFILES, TECNOLOGIES 
 import { isHelloMessgae } from './context_verification';
 import express from "express"
 
-
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
@@ -17,6 +14,7 @@ const client = new Client({
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     }
 });
+
 client.on('qr', (qr: string) => {
     QRCode.toDataURL(qr, function (err: any, url) {
         console.log("Abra esse link no navegador para escanear o QR:");
@@ -24,11 +22,18 @@ client.on('qr', (qr: string) => {
     });
 });
 
+let isReady = false;
 client.on('ready', () => {
     console.log('Bot está pronto!');
+    isReady = true;
 });
 
 client.on('message', async (msg: Message) => {
+    if (!isReady) {
+        console.log('Mensagem recebida antes do bot estar pronto, ignorando.');
+        return;
+    }
+    
     try {
         if (msg.fromMe) return;
 
