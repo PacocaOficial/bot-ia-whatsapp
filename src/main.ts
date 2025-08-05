@@ -42,8 +42,6 @@ client.on('message', async (msg: Message) => {
     try {
         if (msg.fromMe) return;
 
-
-        
         const chat = await msg.getChat();
         const contact = await msg.getContact();
         const name = contact.pushname || 'Usuário';
@@ -52,7 +50,7 @@ client.on('message', async (msg: Message) => {
         await chat.sendStateTyping();
         
         if (!msg.body || msg.hasMedia) {
-            await client.sendMessage(msg.from, `Olá! ${firstName}! \nInfelizmente o Paçoca AI consegue analizar apenas texto por enquanto`);
+            await msg.reply(`Olá! ${firstName}! \nInfelizmente o Paçoca AI consegue analizar apenas texto por enquanto`);
             return;
         }
         
@@ -61,17 +59,12 @@ client.on('message', async (msg: Message) => {
             return;
         }
 
-        // Handle other message types...
-
-        else {
-            const response = await processarComIA(msg.body, firstName);
-            console.log("111");
-            
-            // await msg.reply(response);
-        }
+        const response = await processarComIA(msg.body, firstName);
+        await msg.reply(response);
     } catch (err) {
         console.error("Erro ao processar mensagem:", err);
-        await client.sendMessage(msg.from, `Houve um problema tecnico. \nO Paçoca IA não conseguiu processar sua mensagem\n ${err}`);
+        if(!String(err).includes("serialize"))
+            await client.sendMessage(msg.from, `Houve um problema tecnico. \nO Paçoca IA não conseguiu processar sua mensagem\n ${err}`);
     }
 });
 
