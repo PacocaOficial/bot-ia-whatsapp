@@ -52,7 +52,8 @@ client.on('message', async (msg: Message) => {
         }
     } catch (err) {
         console.error("Erro ao processar mensagem:", err);
-        await msg.reply("⚠️ Ocorreu um erro ao processar sua mensagem.");
+        await msg.reply("Houve um problema tecnico.");
+        await msg.reply("O Paçoca IA não conseguiu processar sua mensagem");
     }
 });
 
