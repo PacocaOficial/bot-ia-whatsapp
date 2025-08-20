@@ -64,7 +64,7 @@ client.on('message', async (msg: Message) => {
     } catch (err) {
         console.error("Erro ao processar mensagem:", err);
         if(!String(err).includes("serialize"))
-            await client.sendMessage(msg.from, `Houve um problema tecnico. \nO Paçoca IA não conseguiu processar sua mensagem\n ${err}`);
+            await client.sendMessage(msg.from, `Houve um problema tecnico. \nO Paçoca IA não conseguiu processar sua mensagem. \n${err}`);
     }
 });
 

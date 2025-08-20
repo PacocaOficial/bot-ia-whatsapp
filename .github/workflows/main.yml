@@ -40,5 +40,7 @@ jobs:
             npm install --legacy-peer-deps
             npm run build
             pm2 stop pacoca-bot || true
+            pm2 delete pacoca-bot || true
             pm2 start build/main.js --name pacoca-bot
             pm2 save
+            pm2 status pacoca-bot
