@@ -8,7 +8,10 @@ function isAboutPacoca(text: string){
 export function isHelloMessgae(text: string): boolean {
     const mensagens = ["ola", "olá", "oi", "bom dia", "boa tarde", "boa noite"];
     const textoLower = text.toLowerCase();
-    return mensagens.some(m => textoLower.includes(m));
+    return mensagens.some(m => {
+        const regex = new RegExp(`\\b${m}\\b`, "i"); // \b = limite de palavra
+        return regex.test(textoLower);
+    });
 }
 
 export function isAboutCreator(text: string): boolean{
